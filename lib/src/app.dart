@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './views/login_screen.dart';
 
 
 class App extends StatelessWidget {
@@ -6,7 +7,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: "RxDart Login App",
       home: Scaffold(
-        body: Text('Show a form here!'),
+        body: LoginScreen(),
       ),
     );
   }
