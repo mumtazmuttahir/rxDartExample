@@ -9,16 +9,19 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
+  final formKey = GlobalKey<FormState>();
+
   Widget build(context) {
     return Container(
       margin: EdgeInsets.all(LoginConfiguration
           .LOGIN_CONTAINER_ALL_MARGIN), //LoginConfiguration.loginContainerAllMrgin),
       child: Form(
+        key: formKey,
         child: Column(
           children: <Widget>[
             emailTextFormField(),
             passwordTextFormField(),
-            containerSpacing (),
+            containerSpacing(),
             submitButton(),
           ],
         ),
@@ -32,7 +35,14 @@ class LoginScreenState extends State<LoginScreen> {
         labelText: LoginConfiguration.EMAIL_TEXT_FIELD_LABEL_TEXT,
         hintText: LoginConfiguration.EMAIL_TEXT_FIELD_HINT_TEXT,
       ),
-      // keyboardType: TextInputType.emailAddress,
+      validator: (value) {
+        //return null if valid
+        //else a string of issue
+        if (!value!.contains('@')) {
+          return LoginConfiguration.EMAIL_TEXT_FIELD_VALIDATOR_TEXT;
+        }
+        return null;
+      },
     );
   }
 
@@ -45,19 +55,34 @@ class LoginScreenState extends State<LoginScreen> {
       obscureText: true,
       enableSuggestions: false,
       autocorrect: false,
+      validator: (value) {
+        //return null if valid
+        //else a string of issue
+        if (value!.length < 4) {
+          return LoginConfiguration.PASSWORD_TEXT_FIELD_VALIDATOR_TEXT;
+        }
+        return null;
+      },
     );
   }
 
-  Widget containerSpacing () {
-    return Container(margin: EdgeInsets.only(bottom: LoginConfiguration.PASSWORD_TEXT_FIELD_MARGIN_BOTTOM));
+  Widget containerSpacing() {
+    return Container(
+        margin: EdgeInsets.only(
+            bottom: LoginConfiguration.PASSWORD_TEXT_FIELD_MARGIN_BOTTOM));
   }
 
   Widget submitButton() {
     return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: Colors.blue, // Background color
-        ),
-        onPressed: () {},
-        child: Text(LoginConfiguration.SUBMIT_BUTTON_TEXT));
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blue, // Background color
+      ),
+      child: Text(LoginConfiguration.SUBMIT_BUTTON_TEXT),
+      onPressed: () {
+        //Validate does show the criteria how it will validate the components
+        //Validatorsin the textfields
+        formKey.currentState!.validate();
+      },
+    );
   }
 }
