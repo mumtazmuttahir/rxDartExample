@@ -10,6 +10,8 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
+  String email = '';
+  String password = '';
 
   Widget build(context) {
     return Container(
@@ -43,6 +45,10 @@ class LoginScreenState extends State<LoginScreen> {
         }
         return null;
       },
+      onSaved: (value) {
+        email = value!;
+      },
+
     );
   }
 
@@ -63,6 +69,9 @@ class LoginScreenState extends State<LoginScreen> {
         }
         return null;
       },
+      onSaved: (value) {
+        password = value!;
+      },
     );
   }
 
@@ -81,7 +90,11 @@ class LoginScreenState extends State<LoginScreen> {
       onPressed: () {
         //Validate does show the criteria how it will validate the components
         //Validatorsin the textfields
-        formKey.currentState!.validate();
+        if (formKey.currentState!.validate()) {
+          formKey.currentState!.save();
+          //take both email and password and send it to the API
+          print('Email: $email and Password: $password');
+        }
       },
     );
   }
